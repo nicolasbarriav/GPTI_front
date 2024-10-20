@@ -1,3 +1,52 @@
-p {
-  color: cadetblue;
+.btn-primary {
+  background-color: rgb(73, 88, 103);
+  color: white;
+  font-weight: bold;
+  border-radius: 28px;
+}
+.btn-primary:hover {
+  background-color: #5d7083;
+  border-color: #5d7083;
+  color: white;
+  font-weight: bold;
+  border-radius: 28px;
+}
+
+.btn-outline-secondary {
+  background-color: white;
+  border-color: #495867;
+  color: #495867;
+  font-weight: bold;
+  border-radius: 28px;
+  margin-right: 5px;
+}
+
+.btn-outline-secondary:hover {
+  background-color: rgba(73, 88, 104, 0.3);
+  border-color: #495867 ;
+  color: #495867 ;
+  font-weight: bold;
+  border-radius: 28px;
+  margin-right: 5px;
+}
+
+.btn-form-delete-value {
+  color: red ;
+  font-weight: bold;
+  padding: 0px;
+}
+
+.form-badge {
+  color: #495867 !important;
+  background-color: white !important;
+  border-color: red;
+  border-width: 1px;
+}
+
+.app-container {
+  padding-bottom: 20px;
+}
+
+.btn-submit {
+  align-content: end;
 }
