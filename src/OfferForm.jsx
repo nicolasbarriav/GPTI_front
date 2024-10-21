@@ -91,19 +91,30 @@ export default function OfferForm({
       );
   };
 
+  const apiData = {
+    tituloTrabajo: formData.jobTitle,
+    area: formData.area,
+    ubicacion: formData.location,
+    tipoEmpleo: formData.contractType,
+    responsabilidades: formData.responsibilities,
+    requisitos: formData.requirements,
+    beneficios: formData.benefits,
+    formato: formData.format,
+  };
+
   // API
   // fetch(`${import.meta.env.VITE_API_URL_GPT}`, {
   //   method: "POST",
   //   headers: {
   //     "Content-Type": "application/json",
   //   },
-  //   body: JSON.stringify(formData),
+  //   body: JSON.stringify(apiData),
   // })
   //   .then((res) => res.json())
   //   .then((data) => {
   //     console.log(data);
-  //     setGenerated(JSON.stringify(data, null, 2));
-  //     handleShow(); // Muestra el modal con la oferta generada
+  //     setGenerated(JSON.stringify(data, null, 2));  REVISAR COMO GUARDARLO
+  //     handleShow(); // Muestra el modal con la oferta generada 
   //   })
   //   .catch((err) => console.error("Error al generar la oferta: ", err));
   // };
