@@ -13,6 +13,7 @@ export default function GenerateOffer() {
     responsibilities: [],
     requirements: [],
     benefits: [], // Lista de beneficios
+    errors: {}, // Errores validación
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -50,6 +51,7 @@ export default function GenerateOffer() {
       <h2>Ingresar requisitos</h2>
       <OfferForm
         formData={formData}
+        setFormData={setFormData}
         handleFormChange={handleFormChange}
         handleArrayChange={handleArrayChange}
         addArrayItem={addArrayItem}

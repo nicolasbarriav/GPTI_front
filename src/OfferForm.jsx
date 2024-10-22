@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Row, Col, Stack, Badge, Modal } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Row,
+  Col,
+  Stack,
+  Badge,
+  Modal,
+  InputGroup,
+} from "react-bootstrap";
 import SelectComponent from "./SelectComponent";
 import {
   areaOptions,
   cityOptions,
   contractTypeOptions,
   formatOptions,
-} from "./options"; // Ajusta la ruta según sea necesario
+} from "./options";
+import ListInput from "./ListInput";
 
 export default function OfferForm({
   formData,
+  setFormData,
   handleFormChange,
   handleArrayChange,
   addArrayItem,
@@ -21,6 +32,47 @@ export default function OfferForm({
 
   const [generated, setGenerated] = useState("");
   const [showModal, setShowModal] = useState(false);
+
+  const [validated, setValidated] = useState(false);
+
+  // Agrego a formData los errores
+  const updateFormDataErrors = (field, hasError) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      errors: {
+        ...prevData.errors,
+        [field]: hasError,
+      },
+    }));
+  };
+
+  // Reviso que se haya seleccionado una opción en cada select
+  const validateSelects = () => {
+    const selectFields = ["area", "location", "contractType", "format"];
+    let isValid = true;
+
+    selectFields.forEach((field) => {
+      const hasError = formData[field] === "";
+      updateFormDataErrors(field, hasError);
+      if (hasError) isValid = false;
+    });
+
+    return isValid;
+  };
+
+  // Reviso que se haya agregado al menos un ítem en cada lista
+  const validateLists = () => {
+    const selectFields = ["responsibilities", "requirements", "benefits"];
+    let isValid = true;
+
+    selectFields.forEach((field) => {
+      const hasError = formData[field].length === 0;
+      updateFormDataErrors(field, hasError);
+      if (hasError) isValid = false;
+    });
+
+    return isValid;
+  };
 
   // Manejo del modal
   const handleClose = () => setShowModal(false);
@@ -54,6 +106,7 @@ export default function OfferForm({
   // Envio el formulario
   const handleSubmit = (event) => {
     event.preventDefault(); // Previene el envío por defecto del formulario
+    event.stopPropagation(); // Detenemos la propagación si el formulario no es válido
 
     // Datos en un formato más legible:
     console.log(
@@ -61,81 +114,98 @@ export default function OfferForm({
       JSON.stringify(formData, null, 2)
     );
 
-    // Simulación de llamada a la API con datos ficticios
-    const simulatedResponse = new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          jobTitle: formData.jobTitle,
-          area: formData.area,
-          location: formData.location,
-          contractType: formData.contractType,
-          responsibilities: formData.responsibilities,
-          requirements: formData.requirements,
-          benefits: formData.benefits,
-          format: formData.format,
-        });
-      }, 1000); // Simula un retraso de 1 segundo
-    });
+    const eventForm = event.currentTarget;
+    const isFormValid = eventForm.checkValidity(); // Revisar si el formulario es valido
+    const isSelectedValid = validateSelects(); // Revisar select con valor seleccionado
+    const areListValuesValid = validateLists(); // Revisar si se ingresaron responsabilidades, requerimientos, beneficios
 
-    simulatedResponse
-      .then((data) => {
-        console.log("Simulated API response:", data);
-        setGenerated(JSON.stringify(data, null, 2)); // Muestra los datos en el modal
-        setGenerated(
-          "¡Oferta de trabajo!\n\nEmpresa: Falabella\nPosición: Desarrollador Full Stack\nÁrea: Tecnología\nUbicación: Madrid\nTipo de empleo: Tiempo completo\n\nResponsabilidades:\n- Desarrollar y mantener aplicaciones web.\n- Colaborar con el equipo de diseño para implementar nuevas características.\n- Realizar pruebas de código y depuración.\n\nRequisitos:\n- Experiencia mínima de 3 años en desarrollo"
-        ); // Muestra los datos en el modal
-        handleShow(); // Muestra el modal con la oferta generada
-      })
-      .catch((err) =>
-        console.error("Error al generar la oferta simulada: ", err)
-      );
+    setValidated(true); // Indicamos que se ha intentado validar
+
+    if (isFormValid && isSelectedValid && areListValuesValid) {
+      // Simulación de llamada a la API con datos ficticios
+      const simulatedResponse = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            jobTitle: formData.jobTitle,
+            area: formData.area,
+            location: formData.location,
+            contractType: formData.contractType,
+            responsibilities: formData.responsibilities,
+            requirements: formData.requirements,
+            benefits: formData.benefits,
+            format: formData.format,
+          });
+        }, 1000); // Simula un retraso de 1 segundo
+      });
+
+      simulatedResponse
+        .then((data) => {
+          console.log("Simulated API response:", data);
+          setGenerated(JSON.stringify(data, null, 2)); // Muestra los datos en el modal
+          setGenerated(
+            "¡Oferta de trabajo!\n\nEmpresa: Falabella\nPosición: Desarrollador Full Stack\nÁrea: Tecnología\nUbicación: Madrid\nTipo de empleo: Tiempo completo\n\nResponsabilidades:\n- Desarrollar y mantener aplicaciones web.\n- Colaborar con el equipo de diseño para implementar nuevas características.\n- Realizar pruebas de código y depuración.\n\nRequisitos:\n- Experiencia mínima de 3 años en desarrollo"
+          ); // Muestra los datos en el modal
+          handleShow(); // Muestra el modal con la oferta generada
+        })
+        .catch((err) =>
+          console.error("Error al generar la oferta simulada: ", err)
+        );
+
+      const apiData = {
+        tituloTrabajo: formData.jobTitle,
+        area: formData.area,
+        ubicacion: formData.location,
+        tipoEmpleo: formData.contractType,
+        responsabilidades: formData.responsibilities,
+        requisitos: formData.requirements,
+        beneficios: formData.benefits,
+        formato: formData.format,
+      };
+
+      // API
+      // fetch(`${import.meta.env.VITE_API_URL_GPT}`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(apiData),
+      // })
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     console.log(data);
+      //     setGenerated(JSON.stringify(data, null, 2));  REVISAR COMO GUARDARLO
+      //     handleShow(); // Muestra el modal con la oferta generada
+      //   })
+      //   .catch((err) => console.error("Error al generar la oferta: ", err));
+      // };
+    } else {
+      console.log("Formulario invalido");
+    }
   };
-
-  const apiData = {
-    tituloTrabajo: formData.jobTitle,
-    area: formData.area,
-    ubicacion: formData.location,
-    tipoEmpleo: formData.contractType,
-    responsabilidades: formData.responsibilities,
-    requisitos: formData.requirements,
-    beneficios: formData.benefits,
-    formato: formData.format,
-  };
-
-  // API
-  // fetch(`${import.meta.env.VITE_API_URL_GPT}`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(apiData),
-  // })
-  //   .then((res) => res.json())
-  //   .then((data) => {
-  //     console.log(data);
-  //     setGenerated(JSON.stringify(data, null, 2));  REVISAR COMO GUARDARLO
-  //     handleShow(); // Muestra el modal con la oferta generada 
-  //   })
-  //   .catch((err) => console.error("Error al generar la oferta: ", err));
-  // };
 
   return (
     <>
-      <Form onSubmit={handleSubmit}>
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
         {/* PUESTO DE TRABAJO */}
         <Form.Group className="mb-3">
           <Form.Label>Puesto de trabajo</Form.Label>
-          <Form.Control
-            type="text"
-            value={formData.jobTitle}
-            onChange={(e) => handleFormChange("jobTitle", e.target.value)}
-            placeholder="Ingresar título del trabajo"
-          />
+          <InputGroup hasValidation>
+            <Form.Control
+              required
+              type="text"
+              value={formData.jobTitle}
+              onChange={(e) => handleFormChange("jobTitle", e.target.value)}
+              placeholder="Ingresar título del trabajo"
+            />
+            <Form.Control.Feedback type="invalid">
+              Por favor ingresa un título de trabajo.
+            </Form.Control.Feedback>
+          </InputGroup>
         </Form.Group>
 
-        {/* AREA */}
         <Row className="mb-3">
           <Col>
+            {/* AREA */}
             <SelectComponent
               label="Área"
               value={formData.area}
@@ -144,6 +214,7 @@ export default function OfferForm({
             />
           </Col>
           <Col>
+            {/* UBICACIÓN */}
             <SelectComponent
               label="Ubicación"
               value={formData.location}
@@ -163,167 +234,50 @@ export default function OfferForm({
         </Row>
 
         {/* RESPONSABILIDADES */}
-        <Form.Group className="mb-3">
-          <Form.Label>Responsabilidades</Form.Label>
-
-          {/* Input */}
-          <Row className="mb-2">
-            <Col>
-              <Form.Control
-                type="text"
-                value={newResponsibility}
-                onChange={(e) => setNewResponsibility(e.target.value)}
-                onKeyDown={(e) =>
-                  handleKeyPress(e, "responsibilities", e.target.value)
-                }
-                placeholder="Nueva responsabilidad"
-              />
-            </Col>
-            <Col xs="auto">
-              <Button
-                variant="outline-secondary"
-                onClick={() => {
-                  if (newResponsibility.trim() !== "") {
-                    addArrayItem("responsibilities", newResponsibility.trim());
-                    setNewResponsibility("");
-                  }
-                }}
-              >
-                Agregar
-              </Button>
-            </Col>
-          </Row>
-
-          {/* Responsabilidades agregadas */}
-          <Stack direction="horizontal" gap={2}>
-            {formData.responsibilities.length > 0 &&
-              formData.responsibilities
-                .slice(-10)
-                .reverse()
-                .map((resp, index) => (
-                  <Badge key={index} pill className="form-badge">
-                    <Button
-                      variant="form-delete-value"
-                      size="sm"
-                      onClick={() => removeArrayItem("responsibilities", resp)}
-                    >
-                      ✕
-                    </Button>
-                    {resp}
-                  </Badge>
-                ))}
-          </Stack>
-        </Form.Group>
+        <ListInput
+          label="Responsabilidades"
+          value={newResponsibility}
+          setValue={setNewResponsibility}
+          placeholder="Nueva responsabilidad"
+          formData={formData}
+          validated={validated}
+          addArrayItem={addArrayItem}
+          removeArrayItem={removeArrayItem}
+        />
 
         {/* REQUERIMIENTOS */}
-        <Form.Group className="mb-3">
-          <Form.Label>Requerimientos</Form.Label>
-          {/* Input */}
-          <Row className="mb-2">
-            <Col>
-              <Form.Control
-                type="text"
-                value={newRequirement}
-                onChange={(e) => setNewRequirement(e.target.value)}
-                onKeyDown={(e) =>
-                  handleKeyPress(e, "requirements", e.target.value)
-                }
-                placeholder="Nuevo requerimiento"
-              />
-            </Col>
-            <Col xs="auto">
-              <Button
-                variant="outline-secondary"
-                onClick={() => {
-                  if (newRequirement.trim() !== "") {
-                    addArrayItem("requirements", newRequirement.trim());
-                    setNewRequirement("");
-                  }
-                }}
-              >
-                Agregar
-              </Button>
-            </Col>
-          </Row>
-          {/* Requerimientos agregados */}
-          <Stack direction="horizontal" gap={2}>
-            {formData.requirements.length > 0 &&
-              formData.requirements
-                .slice(-10)
-                .reverse()
-                .map((req, index) => (
-                  <Badge key={index} pill className="form-badge">
-                    <Button
-                      variant="form-delete-value"
-                      size="sm"
-                      onClick={() => removeArrayItem("requirements", req)}
-                    >
-                      ✕
-                    </Button>
-                    {req}
-                  </Badge>
-                ))}
-          </Stack>
-        </Form.Group>
+        <ListInput
+          label="Requerimientos"
+          value={newRequirement}
+          setValue={setNewRequirement}
+          placeholder="Nuevo requerimiento"
+          formData={formData}
+          validated={validated}
+          addArrayItem={addArrayItem}
+          removeArrayItem={removeArrayItem}
+        />
 
         {/* BENEFICIOS */}
-        <Form.Group className="mb-3">
-          <Form.Label>Beneficios</Form.Label>
-
-          {/* Input */}
-          <Row className="mb-2">
-            <Col>
-              <Form.Control
-                type="text"
-                value={newBenefit}
-                onChange={(e) => setNewBenefit(e.target.value)}
-                onKeyDown={(e) => handleKeyPress(e, "benefits", e.target.value)}
-                placeholder="Nuevo beneficio"
-              />
-            </Col>
-            <Col xs="auto">
-              <Button
-                variant="outline-secondary"
-                onClick={() => {
-                  if (newBenefit.trim() !== "") {
-                    addArrayItem("benefits", newBenefit.trim());
-                    setNewBenefit("");
-                  }
-                }}
-              >
-                Agregar
-              </Button>
-            </Col>
-          </Row>
-
-          {/* Beneficios agregados */}
-          <Stack direction="horizontal" gap={2}>
-            {formData.benefits.length > 0 &&
-              formData.benefits
-                .slice(-10)
-                .reverse()
-                .map((benefit, index) => (
-                  <Badge key={index} pill className="form-badge">
-                    <Button
-                      variant="form-delete-value"
-                      size="sm"
-                      onClick={() => removeArrayItem("benefits", benefit)}
-                    >
-                      ✕
-                    </Button>
-                    {benefit}
-                  </Badge>
-                ))}
-          </Stack>
-        </Form.Group>
+        <ListInput
+          label="Beneficios"
+          value={newBenefit}
+          setValue={setNewBenefit}
+          placeholder="Nuevo beneficio"
+          formData={formData}
+          validated={validated}
+          addArrayItem={addArrayItem}
+          removeArrayItem={removeArrayItem}
+        />
 
         <Row className="mb-3">
           <Col>
+            {/* FORMATO */}
             <SelectComponent
               label="Formato"
               value={formData.format}
               options={formatOptions}
               onChange={(e) => handleFormChange("format", e.target.value)}
+              validated={validated}
             />
           </Col>
           <Col className="btn-submit">
