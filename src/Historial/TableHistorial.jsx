@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { Button, Card, Modal, Spinner, Table } from "react-bootstrap";
+import { Button, Card, Form, Modal, Spinner, Table } from "react-bootstrap";
 import { useOfferGenerator } from "../scripts/useOfferGenerator";
 import ModalOffer from "../Offer/ModalOffer";
+import { contractTypeOptions, formatOptions } from "../scripts/options";
 
 export default function TableHistorial({ prompts }) {
   const [selectedPrompt, setSelectedPrompt] = useState(null);
+  const [selectedFormat, setSelectedFormat] = useState("");
+  const [selectedContractType, setSelectedContractType] = useState("");
+  const [searchJob, setSearchJob] = useState("");
   const [showModal, setShowModal] = useState(false);
 
   const handleClose = () => {
@@ -53,16 +57,69 @@ export default function TableHistorial({ prompts }) {
     return getFullContent(selectedPrompt.generated, selectedPrompt.keywords);
   };
 
+  const handleSelectFormat = (e) => {
+    setSelectedFormat(e.target.value);
+  };
+
+  const handleSearch = (e) => {
+    setSearchJob(e.target.value);
+  };
+
+  const filteredPrompts = prompts.filter((prompt) => {
+    const formatMatch =
+      selectedFormat === "" || prompt.formato === selectedFormat;
+    const searchTerm = searchJob.toLowerCase().trim();
+    const searchMatch =
+      searchTerm === "" ||
+      prompt.tituloTrabajo?.toLowerCase().includes(searchTerm) ||
+      prompt.area?.toLowerCase().includes(searchTerm) ||
+      prompt.ubicacion?.toLowerCase().includes(searchTerm) ||
+      prompt.tipoEmpleo?.toLowerCase().includes(searchTerm);
+    return formatMatch && searchMatch;
+  });
+
   return (
     <Card>
       <Card.Header>
-        <Card.Title>Ofertas Generadas ({prompts.length})</Card.Title>
+        <Card.Title>Ofertas Generadas</Card.Title>
       </Card.Header>
       <Card.Body>
+        <div className="filters">
+          <Form>
+            <div className="d-flex align-items-center gap-3">
+              <div
+                className="d-flex align-items-center column gap-2 pb-3"
+                style={{ flex: 1 }}
+              >
+                <Form.Control
+                  type="text"
+                  placeholder="Buscar oferta"
+                  value={searchJob}
+                  onChange={handleSearch}
+                />
+              </div>
+
+              <Form.Group className="d-flex align-items-center column gap-2 pb-3">
+                <Form.Select
+                  value={selectedFormat}
+                  onChange={handleSelectFormat}
+                >
+                  <option value="">Filtrar por formato</option>
+                  {formatOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </div>
+          </Form>
+        </div>
         <div className="table-responsive">
           <Table striped bordered hover>
             <thead>
               <tr>
+                <th>Formato</th>
                 <th>Título</th>
                 <th>Área</th>
                 <th>Ubicación</th>
@@ -72,8 +129,9 @@ export default function TableHistorial({ prompts }) {
               </tr>
             </thead>
             <tbody>
-              {prompts.map((prompt) => (
+              {filteredPrompts.map((prompt) => (
                 <tr key={prompt.id}>
+                  <td>{prompt.formato}</td>
                   <td>{prompt.tituloTrabajo}</td>
                   <td>{prompt.area}</td>
                   <td>{prompt.ubicacion}</td>
@@ -84,9 +142,9 @@ export default function TableHistorial({ prompts }) {
                   </td>
                 </tr>
               ))}
-              {prompts.length === 0 && (
+              {filteredPrompts.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="text-center">
+                  <td colSpan={7} className="text-center">
                     No hay ofertas generadas
                   </td>
                 </tr>
