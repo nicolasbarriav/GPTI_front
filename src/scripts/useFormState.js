@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export const useFormState = () => {
-  const [formData, setFormData] = useState({
+  const initialState = {
     jobTitle: "",
     area: "",
     location: "",
@@ -10,7 +10,13 @@ export const useFormState = () => {
     responsibilities: [],
     requirements: [],
     benefits: [],
-  });
+  };
+
+  const [formData, setFormData] = useState(initialState);
+
+  const resetForm = () => {
+    setFormData(initialState);
+  };
 
   // Maneja cambios en campos simples
   const handleFormChange = (field, value) => {
@@ -42,5 +48,6 @@ export const useFormState = () => {
     handleFormChange,
     addArrayItem,
     removeArrayItem,
+    resetForm,
   };
 };

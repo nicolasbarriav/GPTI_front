@@ -13,8 +13,13 @@ import { useOfferGenerator } from "../scripts/useOfferGenerator";
 import { useFormState } from "../scripts/useFormState";
 
 export default function OfferForm() {
-  const { formData, handleFormChange, addArrayItem, removeArrayItem } =
-    useFormState();
+  const {
+    formData,
+    handleFormChange,
+    addArrayItem,
+    removeArrayItem,
+    resetForm,
+  } = useFormState();
 
   const [newResponsibility, setNewResponsibility] = useState("");
   const [newRequirement, setNewRequirement] = useState("");
@@ -68,8 +73,12 @@ export default function OfferForm() {
     return isValid;
   };
 
-  const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
+
+  const handleClose = () => {
+    setShowModal(false);
+    resetFormStates();
+  };
 
   const copyText = () => {
     navigator.clipboard.writeText(getFullContent());
@@ -94,6 +103,18 @@ export default function OfferForm() {
         alert(error.message);
       }
     }
+  };
+
+  const resetFormStates = () => {
+    setNewResponsibility("");
+    setNewRequirement("");
+    setNewBenefit("");
+    setValidated(false);
+    setFormErrors({
+      selects: {},
+      lists: {},
+    });
+    resetForm(); // Asumiendo que esta función está disponible en useFormState
   };
 
   return (
