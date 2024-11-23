@@ -61,6 +61,14 @@ export default function TableHistorial({ prompts }) {
     setSelectedFormat(e.target.value);
   };
 
+  const normalizeText = (text) => {
+    return text
+      ?.normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+  };
+
   const handleSearch = (e) => {
     setSearchJob(e.target.value);
   };
@@ -68,13 +76,17 @@ export default function TableHistorial({ prompts }) {
   const filteredPrompts = prompts.filter((prompt) => {
     const formatMatch =
       selectedFormat === "" || prompt.formato === selectedFormat;
-    const searchTerm = searchJob.toLowerCase().trim();
+
+    const searchTerm = normalizeText(searchJob);
     const searchMatch =
       searchTerm === "" ||
-      prompt.tituloTrabajo?.toLowerCase().includes(searchTerm) ||
-      prompt.area?.toLowerCase().includes(searchTerm) ||
-      prompt.ubicacion?.toLowerCase().includes(searchTerm) ||
-      prompt.tipoEmpleo?.toLowerCase().includes(searchTerm);
+      [
+        prompt.tituloTrabajo,
+        prompt.area,
+        prompt.ubicacion,
+        prompt.tipoEmpleo,
+      ].some((field) => normalizeText(field)?.includes(searchTerm));
+
     return formatMatch && searchMatch;
   });
 
