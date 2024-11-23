@@ -1,5 +1,5 @@
 import { Container, Button, Card, Row, Col } from "react-bootstrap";
-import { ClockHistory, FileText } from "react-bootstrap-icons";
+import { ClockHistory, FileText, Gear } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
@@ -17,28 +17,26 @@ export default function Landing() {
           <Row className="g-4">
             <Col md={6}>
               <Button
-                variant="outline-primary"
-                size="lg"
-                className="w-100 py-3 d-flex align-items-center justify-content-center"
-                onClick={() => navigate('/historial')}
+                className="d-flex-row justify-content align-items-center primary-button w-100"
+                onClick={() => navigate("/historial")}
               >
-                <ClockHistory
-                  className="me-2"
-                  size={20}
-                  
-                  />
-                Historial
+                <ClockHistory className="menu-button-icon" /> Historial
               </Button>
             </Col>
             <Col md={6}>
               <Button
-                variant="primary"
-                size="lg"
-                className="w-100 py-3 d-flex align-items-center justify-content-center"
+                className="d-flex-row justify-content align-items-center config-button w-100"
                 onClick={() => navigate("/generar-oferta")}
               >
-                <FileText className="me-2" size={20} />
-                Generar oferta
+                <FileText className="menu-button-icon" /> Generar oferta
+              </Button>
+            </Col>
+            <Col md={12}>
+              <Button
+                className="d-flex-row justify-content align-items-center secondary-button w-100"
+                onClick={() => navigate("/contexto")}
+              >
+                <Gear className="menu-button-icon" /> Configurar contexto
               </Button>
             </Col>
           </Row>

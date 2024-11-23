@@ -10,7 +10,6 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import Context from "./Context";
 import TableHistorial from "./TableHistorial";
 
 const Historial = () => {
@@ -126,17 +125,7 @@ const Historial = () => {
         </Alert>
       )}
 
-      <Row className="mb-4">
-        <Col>
-          <Context
-            currentContext={currentContext}
-            handleUpdateContext={handleUpdateContext}
-            organizationContext={organizationContext}
-            setOrganizationContext={setOrganizationContext}
-            updating={updating}
-          />
-        </Col>
-      </Row>
+      
 
       <Row>
         <Col>

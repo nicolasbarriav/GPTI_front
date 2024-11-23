@@ -18,6 +18,7 @@ function CustomNavbar() {
           <Nav className="me-auto">
             <Nav.Link href="/historial">Historial</Nav.Link>
             <Nav.Link href="/generar-oferta">Generar oferta</Nav.Link>
+            <Nav.Link href="/contexto">Configurar contexto</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

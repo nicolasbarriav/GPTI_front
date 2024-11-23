@@ -118,6 +118,64 @@
   padding-bottom: 20px;
 }
 
+/* LANDING */
+.menu-button {
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border: 2px solid;
+}
+
+.menu-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.menu-button-icon {
+  font-size: 2rem;
+}
+
+.primary-button {
+  background-color: #2c3e50;
+  border-color: #2c3e50;
+  color: white;
+}
+
+.primary-button:hover {
+  background-color: #34495e;
+  border-color: #34495e;
+}
+
+.secondary-button {
+  background-color: white;
+  border-color: #2c3e50;
+  color: #2c3e50;
+}
+
+.secondary-button:hover {
+  background-color: #f8f9fa;
+  border-color: #34495e;
+  color: #34495e;
+}
+
+.config-button {
+  background-color: #607d8b;
+  border-color: #607d8b;
+  color: white;
+}
+
+.config-button:hover {
+  background-color: #546e7a;
+  border-color: #546e7a;
+}
+
 /* VALIDACIÓN FORMULARIO */
 .was-validated .prevent-validation.form-control:valid,
 .prevent-validation.form-control.is-valid {
