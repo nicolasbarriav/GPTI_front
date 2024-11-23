@@ -1,3 +1,4 @@
+/* BOTONES */
 .btn-primary {
   background-color: rgb(73, 88, 103);
   color: white;
@@ -60,6 +61,21 @@
   margin-right: 5px;
 }
 
+.btn-primary:disabled {
+  background-color: rgb(73, 88, 103) !important;
+  color: white !important;
+  font-weight: bold;
+  border-radius: 28px;
+  border-color: #495867 !important;
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.btn-primary:disabled:hover {
+  background-color: rgb(73, 88, 103) !important;
+  color: white !important;
+}
+
 .btn-form-delete-value {
   color: red;
   font-weight: bold;
@@ -68,21 +84,41 @@
   border: none;
 }
 
-.form-badge {
-  color: #495867 !important;
-  background-color: white !important;
-  border-color: red;
-  border-width: 1px;
+.btn-submit {
+  align-content: end;
+}
+
+/* BADGE INGRESADOS EN FORMULARIO */
+/* Añade estos estilos a tu archivo CSS */
+.badge {
+  display: inline-flex !important;
+  align-items: center;
+  font-weight: lighter;
+  line-height: 1.2;
+  background-color: #54585c !important;
+  opacity: 0.7;
+}
+
+.badge button {
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.badge button:hover {
+  opacity: 1;
+}
+
+/* Asegura que el contenedor del badge se expanda correctamente */
+.badge span {
+  flex: 1;
+  min-width: 0;
 }
 
 .app-container {
   padding-bottom: 20px;
 }
 
-.btn-submit {
-  align-content: end;
-}
-
+/* VALIDACIÓN FORMULARIO */
 .was-validated .prevent-validation.form-control:valid,
 .prevent-validation.form-control.is-valid {
   padding: 0.375rem 0.75rem;
@@ -98,4 +134,19 @@
   box-shadow: 0 0 0 0.25rem rgba(146, 146, 146, 0.25) !important;
   border-color: rgba(146, 146, 146, 0.25) !important;
   background-image: none !important;
+}
+
+/* MODAL MOSTRAR OFERTA */
+.offer-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  font-family: inherit; /* Para usar la fuente normal en lugar de monospace */
+  line-height: 1.6;
+}
+
+.offer-content strong {
+  font-weight: bold;
 }

@@ -60,20 +60,41 @@ export default function ListInput({
           Debes agregar al menos un valor.
         </Form.Text>
       )}
-      <Stack direction="horizontal" gap={2} className="mt-2">
+      <div className="d-flex flex-wrap gap-2 mt-2">
         {formData[propertyName].map((item, index) => (
-          <Badge key={index} pill className="form-badge">
+          <div
+            key={index}
+            className="badge bg-secondary rounded-pill d-flex align-items-center"
+            style={{
+              maxWidth: "100%",
+              padding: "8px 12px",
+              marginBottom: "4px",
+            }}
+          >
+            <span
+              style={{
+                wordBreak: "break-word",
+                whiteSpace: "normal",
+                marginRight: "8px",
+              }}
+            >
+              {item}
+            </span>
             <Button
-              className="btn-form-delete-value"
+              variant="link"
               size="sm"
+              className="p-0 text-white"
+              style={{
+                minWidth: "20px",
+                marginLeft: "auto",
+              }}
               onClick={() => removeArrayItem(propertyName, item)}
             >
               ✕
             </Button>
-            {item}
-          </Badge>
+          </div>
         ))}
-      </Stack>
+      </div>
     </Form.Group>
   );
 }

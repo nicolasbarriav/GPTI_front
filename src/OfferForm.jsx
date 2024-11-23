@@ -31,9 +31,12 @@ export default function OfferForm({
   const [newBenefit, setNewBenefit] = useState("");
 
   const [generated, setGenerated] = useState("");
+  const [keyWords, setKeyWords] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
   const [validated, setValidated] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   // Agrego a formData los errores
   const updateFormDataErrors = (field, hasError) => {
@@ -78,9 +81,29 @@ export default function OfferForm({
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
+  const generateKeyWords = () => {
+    console.log("Generar palabras clave");
+  };
+
+  const formatHashtag = (keyword) => {
+    return (
+      "#" +
+      keyword
+        .toLowerCase()
+        .replace(/[^\w\s]/g, "")
+        .replace(/\s+/g, "")
+    );
+  };
+
+  const hashtags = keyWords
+    .filter((keyword) => keyword && keyword.trim())
+    .map(formatHashtag);
+
+  const fullContent = `${generated}\n\n${hashtags.join(" ")}`;
+
   // Función para copiar contenido al portapapeles
   const copyText = () => {
-    navigator.clipboard.writeText(generated);
+    navigator.clipboard.writeText(fullContent);
     alert("Copiado al portapapeles");
   };
 
@@ -108,11 +131,7 @@ export default function OfferForm({
     event.preventDefault(); // Previene el envío por defecto del formulario
     event.stopPropagation(); // Detenemos la propagación si el formulario no es válido
 
-    // Datos en un formato más legible:
-    console.log(
-      "Datos del formulario (formato JSON):",
-      JSON.stringify(formData, null, 2)
-    );
+    setLoading(true);
 
     const eventForm = event.currentTarget;
     // const isFormValid = eventForm.checkValidity(); // Revisar si el formulario es valido
@@ -151,13 +170,17 @@ export default function OfferForm({
         }
 
         const data = await response.json();
+        console.log(data);
         setGenerated(data.response);
+        setKeyWords(data.keywords);
         handleShow(); // Muestra el modal con la oferta generada
       } catch (err) {
         console.error("Error al generar la oferta: ", err);
         alert(
           "Hubo un error al generar la oferta. Por favor intente nuevamente."
         );
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -260,28 +283,52 @@ export default function OfferForm({
             />
           </Col>
           <Col className="btn-submit">
-            <Button type="submit" variant="primary">
-              Generar
+            <Button type="submit" variant="primary" disabled={loading}>
+              {loading ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Generando...
+                </>
+              ) : (
+                "Generar"
+              )}
             </Button>
           </Col>
         </Row>
       </Form>
 
-      <Modal show={showModal} onHide={handleClose} size="lg" centered>
-        <Modal.Header>
+      <Modal
+        show={showModal}
+        fullscreen
+        onHide={handleClose}
+        size="lg"
+        centered
+      >
+        <Modal.Header closeButton className="gap-2">
           <div style={{ flex: 1 }}>
             <span>Oferta Generada</span>
           </div>
-          <div>
-            <Button variant="light" onClick={copyText}>
-              Copiar
-            </Button>
+
+          <div className="d-flex gap-2">
+            <div>
+              <Button variant="light" onClick={generateKeyWords}>
+                Palabras clave
+              </Button>
+            </div>
+            <div>
+              <Button variant="light" onClick={copyText}>
+                Copiar
+              </Button>
+            </div>
           </div>
         </Modal.Header>
-        <Modal.Body>
-          <pre style={{ backgroundColor: "#f8f9fa", padding: "10px" }}>
-            {generated}
-          </pre>
+
+        <Modal.Body className="white-space-pre-wrap">
+          <div className="offer-content">{fullContent}</div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
