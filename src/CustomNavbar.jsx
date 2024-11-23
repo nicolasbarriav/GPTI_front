@@ -17,7 +17,7 @@ function CustomNavbar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/historial">Historial</Nav.Link>
-            <Nav.Link href="/">Crear</Nav.Link>
+            <Nav.Link href="/">Generar oferta</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

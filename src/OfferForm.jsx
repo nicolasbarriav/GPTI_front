@@ -104,7 +104,7 @@ export default function OfferForm({
   };
 
   // Envio el formulario
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault(); // Previene el envío por defecto del formulario
     event.stopPropagation(); // Detenemos la propagación si el formulario no es válido
 
@@ -115,71 +115,51 @@ export default function OfferForm({
     );
 
     const eventForm = event.currentTarget;
-    const isFormValid = eventForm.checkValidity(); // Revisar si el formulario es valido
-    const isSelectedValid = validateSelects(); // Revisar select con valor seleccionado
-    const areListValuesValid = validateLists(); // Revisar si se ingresaron responsabilidades, requerimientos, beneficios
+    // const isFormValid = eventForm.checkValidity(); // Revisar si el formulario es valido
+    // const isSelectedValid = validateSelects(); // Revisar select con valor seleccionado
+    // const areListValuesValid = validateLists(); // Revisar si se ingresaron responsabilidades, requerimientos, beneficios
+
+    const isFormValid = true;
+    const isSelectedValid = true;
+    const areListValuesValid = true;
 
     setValidated(true); // Indicamos que se ha intentado validar
 
-    if (isFormValid && isSelectedValid && areListValuesValid) {
-      // Simulación de llamada a la API con datos ficticios
-      // const simulatedResponse = new Promise((resolve) => {
-      //   setTimeout(() => {
-      //     resolve({
-      //       jobTitle: formData.jobTitle,
-      //       area: formData.area,
-      //       location: formData.location,
-      //       contractType: formData.contractType,
-      //       responsibilities: formData.responsibilities,
-      //       requirements: formData.requirements,
-      //       benefits: formData.benefits,
-      //       format: formData.format,
-      //     });
-      //   }, 1000); // Simula un retraso de 1 segundo
-      // });
-
-      // simulatedResponse
-      //   .then((data) => {
-      //     console.log("Simulated API response:", data);
-      //     // setGenerated(JSON.stringify(data, null, 2)); // Muestra los datos en el modal
-      //     setGenerated(
-      //       "**Oferta de trabajo: Asistente de Ventas en Antofagasta**\n\n**Área:** Oficios y Otros  \n**Ubicación:** Antofagasta  \n**Tipo de empleo:** Full-time  \n\n**Responsabilidades:**  \n- Realizar labores de ventas y atención al cliente en la tienda.  \n\n**Requisitos:**  \n- Experiencia previa en ventas.  \n- Orientación al cliente.  \n\n**Beneficios:**  \n- Oportunidades de crecimiento y desarrollo profesional.  \n- Capacitación continua para el desarrollo de habilidades.  \n- Excelente ambiente laboral.  \n- Descuentos especiales para empleados en productos de Falabella.  \n\nSi cumples con los requisitos y te gustaría unirte a nuestro equipo, ¡postula con nosotros ahora!"
-      //     ); // Muestra los datos en el modal
-      //     handleShow(); // Muestra el modal con la oferta generada
-      //   })
-      //   .catch((err) =>
-      //     console.error("Error al generar la oferta simulada: ", err)
-      //   );
-
-      const apiData = {
-        tituloTrabajo: formData.jobTitle,
-        area: formData.area,
-        ubicacion: formData.location,
-        tipoEmpleo: formData.contractType,
-        responsabilidades: formData.responsibilities,
-        requisitos: formData.requirements,
-        beneficios: formData.benefits,
-        formato: formData.format,
-      };
-
-      // API
-      fetch(`${import.meta.env.VITE_API_URL_GPT}/gpt`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(apiData),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          setGenerated(data.response);  // REVISAR COMO GUARDARLO
-          handleShow(); // Muestra el modal con la oferta generada
-        })
-        .catch((err) => console.error("Error al generar la oferta: ", err));
-    } else {
-      console.log("Formulario invalido");
+    const apiData = {
+      tituloTrabajo: formData.jobTitle,
+      area: formData.area,
+      ubicacion: formData.location,
+      tipoEmpleo: formData.contractType,
+      responsabilidades: formData.responsibilities,
+      requisitos: formData.requirements,
+      beneficios: formData.benefits,
+      formato: formData.format,
     };
+
+    if (isFormValid && isSelectedValid && areListValuesValid) {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL_GPT}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(apiData),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setGenerated(data.response);
+        handleShow(); // Muestra el modal con la oferta generada
+      } catch (err) {
+        console.error("Error al generar la oferta: ", err);
+        alert(
+          "Hubo un error al generar la oferta. Por favor intente nuevamente."
+        );
+      }
+    }
   };
 
   return (

@@ -3,13 +3,43 @@
   color: white;
   font-weight: bold;
   border-radius: 28px;
+  border-color: #495867;
 }
-.btn-primary:hover {
-  background-color: #5d7083;
-  border-color: #5d7083;
-  color: white;
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary.active,
+.btn-primary:active:focus {
+  background-color: #5d7083 !important;
+  border-color: #5d7083 !important;
+  color: white !important;
   font-weight: bold;
   border-radius: 28px;
+  box-shadow: none !important;
+}
+
+.btn-outline-primary {
+  background-color: white;
+  border-color: #495867;
+  color: #495867;
+  font-weight: bold;
+  border-radius: 28px;
+  margin-right: 5px;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary:focus,
+.btn-outline-primary.active,
+.btn-outline-primary:active:focus {
+  background-color: rgba(73, 88, 104, 0.3) !important;
+  border-color: #495867 !important;
+  color: #495867 !important;
+  font-weight: bold;
+  border-radius: 28px;
+  margin-right: 5px;
+  box-shadow: none !important;
 }
 
 .btn-outline-secondary {

@@ -24,7 +24,6 @@ export default function ListInput({
   const isValid = formData[propertyName].length > 0;
   const showError = validated && !isValid; // Error si la lista esta vacia al validar
   const hasErrors = Object.keys(formData.errors).length !== 0;
-  console.log("error: ", hasErrors && formData.errors.benefits);
 
   const handleAddItem = () => {
     if (value.trim() !== "") {
@@ -51,7 +50,6 @@ export default function ListInput({
             }
           }}
           placeholder={placeholder}
-          
         />
         <Button variant="outline-secondary" onClick={handleAddItem}>
           Agregar

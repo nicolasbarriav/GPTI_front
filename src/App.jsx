@@ -4,6 +4,7 @@ import GenerateOffer from "./GenerateOffer";
 import Historial from "./Historial";
 import CustomNavbar from "./CustomNavbar";
 import "./assets/styles.css";
+import Landing from "./Landing";
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
       <BrowserRouter>
         <CustomNavbar />
         <Routes>
-          <Route path={"/"} element={<GenerateOffer />} />
+          <Route path={"/"} element={<Landing />} />
+          <Route path={"/generar-oferta"} element={<GenerateOffer />} />
           <Route path={"/historial"} element={<Historial />} />
         </Routes>
       </BrowserRouter>
