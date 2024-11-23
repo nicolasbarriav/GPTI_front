@@ -4,7 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 
 function CustomNavbar() {
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" fixed className="bg-body-tertiary">
       <Container>
         <Navbar.Brand href="/">
           <img
