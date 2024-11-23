@@ -150,3 +150,51 @@
 .offer-content strong {
   font-weight: bold;
 }
+
+/* Table */
+.fixed-width-table {
+  table-layout: fixed;
+  width: 100%;
+}
+.fixed-width-table th,
+.fixed-width-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px;
+  text-align: center; /* Centrado de texto */
+  vertical-align: middle; /* Centrado vertical */
+}
+.fixed-width-table th:nth-child(1),
+.fixed-width-table td:nth-child(1) {
+  width: 15%;
+}
+.fixed-width-table th:nth-child(2),
+.fixed-width-table td:nth-child(2) {
+  width: 20%;
+}
+.fixed-width-table th:nth-child(3),
+.fixed-width-table td:nth-child(3) {
+  width: 15%;
+}
+.fixed-width-table th:nth-child(4),
+.fixed-width-table td:nth-child(4) {
+  width: 15%;
+}
+.fixed-width-table th:nth-child(5),
+.fixed-width-table td:nth-child(5) {
+  width: 15%;
+}
+.fixed-width-table th:nth-child(6),
+.fixed-width-table td:nth-child(6) {
+  width: 10%;
+}
+.fixed-width-table th:nth-child(7),
+.fixed-width-table td:nth-child(7) {
+  width: 10%;
+}
+.cell-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

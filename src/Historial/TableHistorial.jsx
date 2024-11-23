@@ -116,7 +116,7 @@ export default function TableHistorial({ prompts }) {
           </Form>
         </div>
         <div className="table-responsive">
-          <Table striped bordered hover>
+          <Table striped bordered hover className="fixed-width-table">
             <thead>
               <tr>
                 <th>Formato</th>
@@ -131,13 +131,23 @@ export default function TableHistorial({ prompts }) {
             <tbody>
               {filteredPrompts.map((prompt) => (
                 <tr key={prompt.id}>
-                  <td>{prompt.formato}</td>
-                  <td>{prompt.tituloTrabajo}</td>
-                  <td>{prompt.area}</td>
-                  <td>{prompt.ubicacion}</td>
-                  <td>{prompt.tipoEmpleo}</td>
-                  <td>{new Date(prompt.createdAt).toLocaleDateString()}</td>
-                  <td>
+                  <td className="cell-content">
+                    {prompt.formato == "foro"
+                      ? "Foro de trabajo online"
+                      : prompt.formato == "mensaje"
+                      ? "Mensaje de texto"
+                      : prompt.formato}
+                  </td>
+                  <td className="cell-content" style={{ textAlign: "left" }}>
+                    {prompt.tituloTrabajo}
+                  </td>
+                  <td className="cell-content">{prompt.area}</td>
+                  <td className="cell-content">{prompt.ubicacion}</td>
+                  <td className="cell-content">{prompt.tipoEmpleo}</td>
+                  <td className="cell-content">
+                    {new Date(prompt.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="cell-content">
                     <Button onClick={() => handlePreview(prompt)}>Ver</Button>
                   </td>
                 </tr>
