@@ -1,9 +1,8 @@
 import { Col, Container, Row } from "react-bootstrap";
 import OfferForm from "./OfferForm";
-import Preview from "./Preview";
 import { useState } from "react";
 
-export default function GenerateOffer() {
+export default function GenerateOfferDisplay() {
   const initialFormState = {
     jobTitle: "",
     area: "", // Departamento o área
