@@ -1,6 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import { Link } from 'react-router-dom';  // Importamos Link de react-router-dom
 
 function CustomNavbar() {
   return (
@@ -15,11 +16,16 @@ function CustomNavbar() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="/Historial">Historial</Nav.Link>
+          {/* <Nav className="me-auto">
+            <Nav.Link href="/historial">Historial</Nav.Link>
             <Nav.Link href="/generar-oferta">Generar oferta</Nav.Link>
             <Nav.Link href="/contexto">Configurar contexto</Nav.Link>
-          </Nav>
+          </Nav> */}
+        <Nav className="me-auto">
+          <Nav.Link as={Link} to="/historial">Historial</Nav.Link>
+          <Nav.Link as={Link} to="/generar-oferta">Generar oferta</Nav.Link>
+          <Nav.Link as={Link} to="/contexto">Configurar contexto</Nav.Link>
+        </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
