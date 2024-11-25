@@ -34,9 +34,9 @@ export default function Landing() {
             <Col md={12}>
               <Button
                 className="d-flex-row justify-content align-items-center secondary-button w-100"
-                onClick={() => navigate("/contexto")}
+                onClick={() => navigate("/informacion-adicional")}
               >
-                <Gear className="menu-button-icon" /> Configurar contexto
+                <Gear className="menu-button-icon" /> Agregar información adicional sobre la organización
               </Button>
             </Col>
           </Row>

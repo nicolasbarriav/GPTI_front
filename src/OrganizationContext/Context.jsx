@@ -110,46 +110,52 @@ const Context = () => {
     <Container className="pt-3">
         <Card>
         <Card.Header>
-            <Card.Title>Contexto de la Organización</Card.Title>
+          <Card.Title>Información adicional sobre la organización</Card.Title>
         </Card.Header>
         <Card.Body>
-            <div className="mb-4">
-            <h6 className="mb-3">Contexto Actual:</h6>
+          <Card.Text className="text-muted">
+            Define información adicional para darle un enfoque personalizado al
+            puesto que estás ofreciendo. Esta información ayudará a resaltar
+            aspectos clave relacionados con el rol y las necesidades
+            específicas.
+          </Card.Text>
+          <div className="mb-4">
+            <h6 className="mb-3">Información Actual:</h6>
             <Alert variant="info">{currentContext}</Alert>
-            </div>
+        </div>
 
-            <h6 className="mb-3">Actualizar Contexto:</h6>
-            <Form onSubmit={handleUpdateContext}>
+          <h6 className="mb-3">Actualizar la información:</h6>
+          <Form onSubmit={handleUpdateContext}>
             <Form.Group className="mb-3">
-                <Form.Control
+              <Form.Control
                 as="textarea"
                 rows={4}
                 placeholder="Ingrese el nuevo contexto de la organización..."
                 value={organizationContext}
                 onChange={(e) => setOrganizationContext(e.target.value)}
-                />
+              />
             </Form.Group>
             <Button
-                type="submit"
-                disabled={updating}
-                className="d-flex align-items-center gap-2"
+              type="submit"
+              disabled={updating}
+              className="d-flex align-items-center gap-2"
             >
-                {updating && (
+              {updating && (
                 <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
                 />
-                )}
-                {updating ? "Actualizando..." : "Actualizar Contexto"}
+              )}
+              {updating ? "Actualizando..." : "Actualizar"}
             </Button>
-            </Form>
+          </Form>
         </Card.Body>
-        </Card>
+      </Card>
     </Container>
-    );
+  );
 }
 
 export default Context;

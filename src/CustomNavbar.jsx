@@ -16,15 +16,10 @@ function CustomNavbar() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          {/* <Nav className="me-auto">
-            <Nav.Link href="/historial">Historial</Nav.Link>
-            <Nav.Link href="/generar-oferta">Generar oferta</Nav.Link>
-            <Nav.Link href="/contexto">Configurar contexto</Nav.Link>
-          </Nav> */}
         <Nav className="me-auto">
           <Nav.Link as={Link} to="/historial">Historial</Nav.Link>
           <Nav.Link as={Link} to="/generar-oferta">Generar oferta</Nav.Link>
-          <Nav.Link as={Link} to="/contexto">Configurar contexto</Nav.Link>
+          <Nav.Link as={Link} to="/informacion-adicional">Agregar Información adicional</Nav.Link>
         </Nav>
         </Navbar.Collapse>
       </Container>

@@ -16,7 +16,7 @@ function App() {
           <Route path={"/"} element={<Landing />} />
           <Route path={"/generar-oferta"} element={<GenerateOfferDisplay />} />
           <Route path={"/historial"} element={<Historial />} />
-          <Route path={"/contexto"} element={<Context />} />
+          <Route path={"/informacion-adicional"} element={<Context />} />
         </Routes>
       </BrowserRouter>
     </>
