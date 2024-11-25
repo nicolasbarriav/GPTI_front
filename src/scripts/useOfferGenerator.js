@@ -20,7 +20,11 @@ export const useOfferGenerator = () => {
     console.log(formData);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL_GPT}`, {
+      console.log(
+        "Fetching from:",
+        `${import.meta.env.VITE_API_URL_ORGANIZATION}/gpt/`
+      );
+      const response = await fetch(`${import.meta.env.VITE_API_URL_ORGANIZATION}/gpt/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
